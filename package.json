@@ -1,0 +1,31 @@
+{
+  "name": "koop-output-wms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "standard && tape test/*.js | tap-spec",
+    "clean": "rm -rf dist",
+    "compile": "buble -i src -o dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopjs/koop-output-wms.git"
+  },
+  "author": "Rich Gwozdz <rgwozdz@esri.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/koopjs/koop-output-wms/issues"
+  },
+  "homepage": "https://github.com/koopjs/koop-output-wms#readme",
+  "dependencies": {
+    "@mapbox/geojson-mapnikify": "^1.0.0",
+    "mapnik": "^3.7.2"
+  },
+  "devDependencies": {
+    "buble": "^0.19.3",
+    "standard": "^11.0.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.0"
+  }
+}
