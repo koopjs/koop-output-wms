@@ -1,24 +1,21 @@
-const render = require('./render')
-const { isPng } = require('./wms-utils')
+const { getMap } = require('./operations')
+
 /**
- *
- * @param {*} req
- * @param {*} res
- * @param {*} data
+ * Route requests to proper operations
+ * @param {object} req
+ * @param {object} res
+ * @param {object} data
  */
 function route (req, res, data) {
   const queryParams = parseQueryParams(req.query)
 
-  render(queryParams, data, function (err, tile) {
-    if (err || !tile || !isPng(tile)) {
-      res.status(err.code || 500).json(err || new Error("Rendering didn't produce a proper tile"))
-    } else {
-      res.status(200)
-        .set('Content-Length', tile.length)
-        .set('Content-Type', 'image/png')
-        .send(tile)
-    }
-  })
+  switch (queryParams.REQUEST) {
+    case 'GetMap':
+      getMap(queryParams, data, res)
+      break
+    default:
+      res.status(404).json(new Error(`REQUEST=${queryParams.REQUEST} is not supported`))
+  }
 }
 
 /**
