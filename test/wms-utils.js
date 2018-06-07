@@ -1,84 +1,49 @@
 const test = require('tape')
-const { normalizeDimensions, normalizeBbox, isPng } = require('../src/wms-utils')
+const { normalizeDimension, normalizeBbox, isPng } = require('../src/wms-utils')
 
 test('normalizeDimensions - in-range integer input', t => {
-  t.plan(3)
+  t.plan(2)
   const inWidth = 512
-  const inHeight = 512
-  const { err, width, height } = normalizeDimensions(inWidth, inHeight)
-  t.equal(err, null)
-  t.equal(width, 512)
-  t.equal(height, 512)
+  const { err, size } = normalizeDimension(inWidth)
+  t.equal(err, undefined)
+  t.equal(size, 512)
 })
 
 test('normalizeDimensions - undefined input', t => {
-  t.plan(3)
-  const { err, width, height } = normalizeDimensions(undefined, undefined)
-  t.equal(err, null)
-  t.equal(width, 256)
-  t.equal(height, 256)
+  t.plan(2)
+  const { err, size } = normalizeDimension(undefined)
+  t.equal(err, undefined)
+  t.equal(size, 256)
 })
 
 test('normalizeDimensions - string input', t => {
-  t.plan(3)
+  t.plan(2)
   const inWidth = '512'
-  const inHeight = '512'
-  const { err, width, height } = normalizeDimensions(inWidth, inHeight)
-  t.equal(err, null)
-  t.equal(width, 512)
-  t.equal(height, 512)
+  const { err, size } = normalizeDimension(inWidth)
+  t.equal(err, undefined)
+  t.equal(size, 512)
 })
 
-test('normalizeDimensions - out of range width', t => {
+test('normalizeDimensions - out of range input', t => {
   t.plan(2)
   const inWidth = 0
-  const inHeight = 256
-  const { err } = normalizeDimensions(inWidth, inHeight)
+  const { err } = normalizeDimension(inWidth)
   t.equal(err instanceof Error, true)
   t.equal(err.code, 400)
 })
 
-test('normalizeDimensions - out of range width', t => {
+test('normalizeDimensions - out of range input', t => {
   t.plan(2)
   const inWidth = 2049
-  const inHeight = 256
-  const { err } = normalizeDimensions(inWidth, inHeight)
-  t.equal(err instanceof Error, true)
-  t.equal(err.code, 400)
-})
-
-test('normalizeDimensions - out of range height', t => {
-  t.plan(2)
-  const inWidth = 256
-  const inHeight = 0
-  const { err } = normalizeDimensions(inWidth, inHeight)
-  t.equal(err instanceof Error, true)
-  t.equal(err.code, 400)
-})
-
-test('normalizeDimensions - out of range height', t => {
-  t.plan(2)
-  const inWidth = 256
-  const inHeight = 2049
-  const { err } = normalizeDimensions(inWidth, inHeight)
+  const { err } = normalizeDimension(inWidth)
   t.equal(err instanceof Error, true)
   t.equal(err.code, 400)
 })
 
 test('normalizeDimensions - invalid string width input', t => {
   t.plan(2)
-  const inWidth = '256'
-  const inHeight = 'test'
-  const { err } = normalizeDimensions(inWidth, inHeight)
-  t.equal(err instanceof Error, true)
-  t.equal(err.code, 400)
-})
-
-test('normalizeDimensions - invalid string height input', t => {
-  t.plan(2)
   const inWidth = 'test'
-  const inHeight = '256'
-  const { err } = normalizeDimensions(inWidth, inHeight)
+  const { err } = normalizeDimension(inWidth)
   t.equal(err instanceof Error, true)
   t.equal(err.code, 400)
 })
@@ -86,9 +51,9 @@ test('normalizeDimensions - invalid string height input', t => {
 test('normalizeBbox - valid input string', t => {
   t.plan(2)
   const inBbox = '5009377,10018754,10018754,15028131'
-  const { err, bbox } = normalizeBbox(inBbox)
-  t.equal(err, null)
-  t.deepEqual(bbox, [5009377, 10018754, 10018754, 15028131])
+  const { err, coordinates } = normalizeBbox(inBbox)
+  t.equal(err, undefined)
+  t.deepEqual(coordinates, [5009377, 10018754, 10018754, 15028131])
 })
 
 test('normalizeBbox - invalid input string', t => {

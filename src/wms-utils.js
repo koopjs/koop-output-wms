@@ -2,36 +2,39 @@ const util = require('util')
 
 /**
  * Normalize and range check input dimensions
- * @param {*} inWidth
- * @param {*} inHeight
- * @returns {object} object with error, width, height
+ * @param {*} input
+ * @returns {object} object with error or dimension
  */
-function normalizeDimensions (inWidth, inHeight) {
-  let width = (inWidth === undefined) ? 256 : parseInt(inWidth)
-  let height = (inHeight === undefined) ? 256 : parseInt(inHeight)
-  if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || width > 2048 || height < 1 || height > 2048) {
-    let err = new Error('Invalid size: ' + inWidth + '×' + inHeight)
+function normalizeDimension (input) {
+  const size = (input === undefined) ? 256 : parseInt(input)
+  if (!Number.isInteger(size) || size < 1 || size > 2048) {
+    const err = new Error('Invalid dimension: ' + size)
     err.code = 400
     return { err }
   }
-  return { err: null, width, height }
+  return { size }
 }
 
-function normalizeBbox (bboxStr, errCallback = () => {}) {
+/**
+ * Convert a Bbox string to an integer array
+ * @param {string} bboxStr string representation of Bbox coordinates
+ * @returns {Number[]} Bbox as number array
+ */
+function normalizeBbox (bboxStr) {
   const bboxStrArr = bboxStr ? bboxStr.split(',') : []
   if (bboxStrArr.length !== 4) {
     let err = new Error('Invalid bbox: ' + util.inspect(bboxStrArr))
     err.code = 400
     return { err }
   }
-  const bbox = bboxStrArr.map(parseFloat)
-  if (bbox.some(isNaN)) {
-    let err = new Error('Invalid bbox: ' + util.inspect(bbox))
+  const coordinates = bboxStrArr.map(parseFloat)
+  if (coordinates.some(isNaN)) {
+    let err = new Error('Invalid bbox: ' + util.inspect(coordinates))
     err.code = 400
     return { err }
   }
 
-  return { err: null, bbox }
+  return { coordinates }
 }
 
 /**
@@ -45,4 +48,4 @@ function isPng (data) {
   data[6] === 0x1A && data[7] === 0x0A
 }
 
-module.exports = { normalizeDimensions, normalizeBbox, isPng }
+module.exports = { normalizeDimension, normalizeBbox, isPng }

@@ -1,7 +1,7 @@
 const mapnik = require('mapnik')
 mapnik.register_default_input_plugins()
 const mapnikify = require('@mapbox/geojson-mapnikify')
-const { normalizeDimensions, normalizeBbox } = require('./wms-utils')
+const { normalizeDimension, normalizeBbox } = require('./wms-utils')
 /**
  * Render a mapnik image tile from geojson
  * @param {object} wmsQueryParams WMS parameters from request
@@ -11,9 +11,10 @@ const { normalizeDimensions, normalizeBbox } = require('./wms-utils')
  */
 function render (wmsQueryParams, geojson, callback, options = {}) {
   // Normalize the WMS dimensions
-  const dimensions = normalizeDimensions(wmsQueryParams.WIDTH, wmsQueryParams.HEIGHT)
-  if (dimensions.err) return callback(dimensions.err)
-
+  const width = normalizeDimension(wmsQueryParams.WIDTH)
+  if (width.err) return callback(width.err)
+  const height = normalizeDimension(wmsQueryParams.HEIGHT)
+  if (height.err) return callback(height.err)
   // Normalize the WMS Bbox
   const bbox = normalizeBbox(wmsQueryParams.BBOX)
   if (bbox.err) return callback(bbox.err)
@@ -27,10 +28,10 @@ function render (wmsQueryParams, geojson, callback, options = {}) {
     map.fromString(xml, function (err, map) {
       if (err) return callback(err)
       // Configure and render
-      map.resize(dimensions.width, dimensions.height)
+      map.resize(width.size, height.size)
       if (wmsQueryParams.SRS) map.srs = `+init=${wmsQueryParams.SRS}`
-      map.extent = bbox.bbox
-      var canvas = new mapnik.Image(dimensions.width, dimensions.height)
+      map.extent = bbox.coordinates
+      var canvas = new mapnik.Image(width.size, height.size)
       map.render(canvas, function (err, image) {
         if (err) return callback(err)
         if (options.palette) return image.encode('png8:z=1', {palette: options.palette}, callback)
