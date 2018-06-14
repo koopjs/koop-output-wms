@@ -21,13 +21,13 @@ test('getMap - valid input', t => {
     bbox: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
   }
 
-  // Mock Response Object 
+  // Mock Response Object
   function ResMock () {
     let headers = []
     this.status = (_code) => {
       t.equal(_code, 200)
       return this
-    },
+    }
     this.set = (key, value) => {
       headers.push({[key]: value})
       if (headers.length === 1) {
@@ -36,7 +36,7 @@ test('getMap - valid input', t => {
         t.deepEqual(headers[1], {'Content-Type': 'image/png'})
       }
       return this
-    },
+    }
     this.send = (_tile) => {
       t.equals(isPng(_tile), true)
     }

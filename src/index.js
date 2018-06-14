@@ -1,13 +1,8 @@
-const router = require('./router')
+const requestHandler = require('./request-handler')
 
 function WMS () {}
 
-WMS.prototype.serve = function (req, res) {
-  this.model.pull(req, (e, data) => {
-    if (e) res.status(e.code || 500).json({ error: e.message })
-    else router.route(req, res, data)
-  })
-}
+WMS.prototype.serve = requestHandler
 
 WMS.version = require('../package.json').version
 WMS.type = 'output'
