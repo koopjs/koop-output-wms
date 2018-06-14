@@ -6,18 +6,18 @@ const render = require('../src/render')
 test('render - valid input', t => {
   t.plan(2)
   const wmsQueryParams = {
-    SERVICE: 'WMS',
-    REQUEST: 'GetMap',
-    VERSION: '1.1.1',
-    LAYERS: '__all__',
-    STYLES: null,
-    FORMAT: 'image/png',
-    TRANSPARENT: 'true',
-    HEIGHT: '256',
-    WIDTH: '256',
-    DETECTRETINA: 'true',
-    SRS: 'EPSG:3857',
-    BBOX: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
+    service: 'WMS',
+    request: 'GetMap',
+    version: '1.1.1',
+    layers: '__all__',
+    styles: null,
+    format: 'image/png',
+    transparent: 'true',
+    height: '256',
+    width: '256',
+    detectretina: 'true',
+    srs: 'EPSG:3857',
+    bbox: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
   }
   render(wmsQueryParams, pointFixture, (err, tile) => {
     t.equal(err, null)
@@ -28,18 +28,18 @@ test('render - valid input', t => {
 test('render - invalid query param ', t => {
   t.plan(2)
   const wmsQueryParams = {
-    SERVICE: 'WMS',
-    REQUEST: 'GetMap',
-    VERSION: '1.1.1',
-    LAYERS: '__all__',
-    STYLES: null,
-    FORMAT: 'image/png',
-    TRANSPARENT: 'true',
-    HEIGHT: 'test',
-    WIDTH: '256',
-    DETECTRETINA: 'true',
-    SRS: 'EPSG:3857',
-    BBOX: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
+    service: 'WMS',
+    request: 'GetMap',
+    version: '1.1.1',
+    layers: '__all__',
+    styles: null,
+    format: 'image/png',
+    transparent: 'true',
+    height: 'test',
+    width: '256',
+    detectretina: 'true',
+    srs: 'EPSG:3857',
+    bbox: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
   }
   render(wmsQueryParams, pointFixture, (err, tile) => {
     t.equal(err instanceof Error, true)
