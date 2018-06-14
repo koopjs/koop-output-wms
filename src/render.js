@@ -11,12 +11,12 @@ const { normalizeDimension, normalizeBbox } = require('./wms-utils')
  */
 function render (wmsQueryParams, geojson, callback, options = {}) {
   // Normalize the WMS dimensions
-  const width = normalizeDimension(wmsQueryParams.WIDTH)
+  const width = normalizeDimension(wmsQueryParams.width)
   if (width.err) return callback(width.err)
-  const height = normalizeDimension(wmsQueryParams.HEIGHT)
+  const height = normalizeDimension(wmsQueryParams.height)
   if (height.err) return callback(height.err)
   // Normalize the WMS Bbox
-  const bbox = normalizeBbox(wmsQueryParams.BBOX)
+  const bbox = normalizeBbox(wmsQueryParams.bbox)
   if (bbox.err) return callback(bbox.err)
 
   // Convert GeoJSON to Mapnik XML
@@ -29,7 +29,7 @@ function render (wmsQueryParams, geojson, callback, options = {}) {
       if (err) return callback(err)
       // Configure and render
       map.resize(width.size, height.size)
-      if (wmsQueryParams.SRS) map.srs = `+init=${wmsQueryParams.SRS}`
+      if (wmsQueryParams.SRS) map.srs = `+init=${wmsQueryParams.srs}`
       map.extent = bbox.coordinates
       var canvas = new mapnik.Image(width.size, height.size)
       map.render(canvas, function (err, image) {

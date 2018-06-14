@@ -27,7 +27,7 @@ function route (req, res, data) {
  */
 function parseQueryParams (query = {}) {
   return Object.keys(query).reduce((options, key) => {
-    options[key] = tryParse(query[key])
+    options[key.toLowerCase()] = tryParse(query[key])
     return options
   }, {})
 }
