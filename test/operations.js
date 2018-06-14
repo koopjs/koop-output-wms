@@ -7,18 +7,18 @@ test('getMap - valid input', t => {
   t.plan(4)
   // Test parameters
   const wmsQueryParams = {
-    SERVICE: 'WMS',
-    REQUEST: 'GetMap',
-    VERSION: '1.1.1',
-    LAYERS: '__all__',
-    STYLES: null,
-    FORMAT: 'image/png',
-    TRANSPARENT: 'true',
-    HEIGHT: '256',
-    WIDTH: '256',
-    DETECTRETINA: 'true',
-    SRS: 'EPSG:3857',
-    BBOX: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
+    service: 'WMS',
+    request: 'GetMap',
+    version: '1.1.1',
+    layers: '__all__',
+    styles: null,
+    format: 'image/png',
+    transparent: 'true',
+    height: '256',
+    width: '256',
+    detectretina: 'true',
+    srs: 'EPSG:3857',
+    bbox: '5009377.085697311,10018754.171394618,10018754.171394622,15028131.25709193'
   }
 
   // Mock Response Object 
