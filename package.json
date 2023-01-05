@@ -23,7 +23,7 @@
     "mapnik": "^3.7.2"
   },
   "devDependencies": {
-    "buble": "^0.19.3",
+    "buble": "^0.20.0",
     "standard": "^11.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.0"
